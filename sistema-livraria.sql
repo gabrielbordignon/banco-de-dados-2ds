@@ -28,3 +28,8 @@ INSERT INTO Compras (CompraID, ClienteID, NomeLivro) VALUES
 -- 3. Linhas de comando solicitadas para visualização nas abas 1 e 2
 SELECT * FROM Clientes;
 SELECT * FROM Compras;
+
+
+SELECT Clientes.nomeCliente, Compras.NomeLivro
+FROM Compras
+INNER JOIN Clientes ON Compras.ClienteID = Clientes.ID;
