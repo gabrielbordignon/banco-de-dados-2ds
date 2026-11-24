@@ -37,6 +37,22 @@ def salvar_cliente():
     limpar_formulario()
 
 
+def visualizar_clientes():
+    lista = tk.Toplevel(janela)
+    lista.title("Clientes Cadastrados")
+    colunas = ("ID", "Nome", "Email", "Telefone")
+    tabela = ttk.Treeview(lista, columns=colunas, show="headings")
+    for coluna, largura in zip(colunas, (50, 160, 220, 130)):
+        tabela.heading(coluna, text=coluna)
+        tabela.column(coluna, width=largura)
+    barra = ttk.Scrollbar(lista, orient="vertical", command=tabela.yview)
+    tabela.configure(yscrollcommand=barra.set)
+    barra.pack(side="right", fill="y")
+    tabela.pack(fill="both", expand=True)
+    for registro in conexao.execute("SELECT id, nome, email, telefone FROM clientes ORDER BY id"):
+        tabela.insert("", "end", values=registro)
+
+
 painel = ttk.Frame(janela, padding=12)
 painel.pack(fill="both", expand=True)
 campos = []
@@ -50,6 +66,7 @@ botoes = ttk.Frame(painel)
 botoes.grid(row=3, column=0, columnspan=2, pady=8)
 ttk.Button(botoes, text="Salvar", command=salvar_cliente).pack(side="left")
 ttk.Button(botoes, text="Limpar", command=limpar_formulario).pack(side="left")
+ttk.Button(botoes, text="Visualizar Clientes", command=visualizar_clientes).pack(side="left")
 campos[0].focus_set()
 try:
     janela.mainloop()
